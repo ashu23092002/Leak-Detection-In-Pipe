@@ -101,7 +101,7 @@ lc = pd.read_csv(dir_path+"\\"+dir_list[2])
 lc_time = lc.loc[:,"Sample"].values
 lc_sample = lc.loc[:,"Value"].values
 
-ol = pd.read_csv(dir_path+"\\"+dir_list[3])
+ol = pd.read_csv(dir_path+"\\"+dir_list[4])
 
 ol_time = ol.loc[:,"Sample"].values
 ol_sample = ol.loc[:,"Value"].values
