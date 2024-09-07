@@ -79,6 +79,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 print(dir_path)
 
 dir_list = os.listdir(dir_path)
+dir_list = [file for file in dir_list if file.endswith('.csv')]
 print(dir_list)
 
 nl = pd.read_csv(dir_path+"\\"+dir_list[3])   
