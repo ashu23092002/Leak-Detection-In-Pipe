@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.fftpack import fft, ifft
 
+# Reading excel files from current directory
 directory_path = os.path.dirname(os.path.abspath(__file__))
 
 file_list = os.listdir(directory_path)
@@ -34,7 +35,7 @@ for file in excel_file_data:
 
 excel_file_data = [file[:min_samples] for file in excel_file_data]
 
-
+# Storing excel file sample data and using excel file name as key for dictionary
 leak_samples = dict(zip(excel_file_keys, excel_file_data))
 
 file_path = os.path.join(directory_path, excel_file_list[0])
@@ -44,17 +45,38 @@ time_samples = time_samples[:min_samples]
 
 pprint.pprint(leak_samples)
 
+# FFT analsis of samples 
 fft_analysed_samples = dict()
 for key, value in leak_samples.items():
     fft_analysed_samples[key] = fft(value)
 
-N = len(fft_analysed_samples[excel_file_keys[0]])
+# Creating frequency axis sampling points
+N = min_samples
 n = np.arange(N)
 
-T = N * time_samples[1]
+sampling_interval = time_samples[1]
+T = N * sampling_interval
 
 freq = n / T
 freq_max_limit = np.median(freq)
-plt.plot(freq, abs(fft_analysed_samples[excel_file_keys[0]]))
-plt.xlim([0, freq_max_limit])
+
+N = 100000
+n = np.arange(N)
+
+sampling_interval = time_samples[1]
+T = N * sampling_interval
+
+freq1 = n / T
+freq1_max_limit = np.median(freq1)
+
+x = leak_samples[excel_file_keys[1]]
+x = x[0:N]
+X = fft(x)
+
+print(len(fft_analysed_samples[excel_file_keys[0]]))
+print(1/sampling_interval)
+
+plt.plot(freq1, abs(X), color = 'blue', alpha = 0.5)
+# plt.plot(freq, abs(fft_analysed_samples[excel_file_keys[0]]), color = 'red', alpha = 0.5)
+plt.xlim([-100, freq_max_limit])
 plt.show()
