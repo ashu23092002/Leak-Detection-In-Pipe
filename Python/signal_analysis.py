@@ -43,7 +43,7 @@ data = pd.read_csv(file_path)
 time_samples = data.iloc[:,0].values
 time_samples = time_samples[:min_samples]
 
-pprint.pprint(leak_samples)
+# pprint.pprint(leak_samples)
 
 # FFT analsis of samples 
 fft_analysed_samples = dict()
@@ -51,7 +51,8 @@ for key, value in leak_samples.items():
     fft_analysed_samples[key] = fft(value)
 
 # Creating frequency axis sampling points
-N = min_samples
+number_of_samples = 10000
+N = number_of_samples
 n = np.arange(N)
 
 sampling_interval = time_samples[1]
@@ -59,24 +60,21 @@ T = N * sampling_interval
 
 freq = n / T
 freq_max_limit = np.median(freq)
+print(len(freq))
 
-N = 100000
-n = np.arange(N)
+# Defining the number of samples between each fft analysis
 
-sampling_interval = time_samples[1]
-T = N * sampling_interval
+spacing = int(number_of_samples / 10)
+fft_data = dict()
+for key, value in leak_samples.items():
+    
+    fft_segments = []
+    max_samples = int(len(value) / spacing)
+    for i in range(0, max_samples):
+        segment = fft(value[(i * spacing) : (i * spacing + number_of_samples)])
+        fft_segments.append(segment)
+    
+    fft_data[key] = pd.DataFrame(fft_segments, columns = freq)
+    print(type(fft_data[key]))
 
-freq1 = n / T
-freq1_max_limit = np.median(freq1)
-
-x = leak_samples[excel_file_keys[1]]
-x = x[0:N]
-X = fft(x)
-
-print(len(fft_analysed_samples[excel_file_keys[0]]))
-print(1/sampling_interval)
-
-plt.plot(freq1, abs(X), color = 'blue', alpha = 0.5)
-# plt.plot(freq, abs(fft_analysed_samples[excel_file_keys[0]]), color = 'red', alpha = 0.5)
-plt.xlim([-100, freq_max_limit])
-plt.show()
+pprint.pprint(fft_data[excel_file_keys[0]].head())
