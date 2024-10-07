@@ -6,5 +6,7 @@ Dataset of Leak Simulations in Experimental Testbed Water Distribution System:[h
 
 ## **To-Do List**
 - [x] Fix Codespace No such file error
-- [ ] Add Frequency Reponse viewer which can be viewed at different time instances
+- [x] Convert accelerometer data to fft analyzed samples and store it in pandas.dataFrame
+- [x] Fixed Jupyter java error for command '%matplotlib widget' within the notebook
+- [ ] Create a interactive slider to witch between different fft plots for a case
       
